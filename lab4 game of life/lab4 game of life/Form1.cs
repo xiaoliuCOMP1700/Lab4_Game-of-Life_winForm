@@ -20,6 +20,8 @@ namespace lab4_game_of_life
         int cycle = 0;
         SpeedModeless speedDiaplog;
         int speed = 200;
+        int cellsNumber =100;
+        Color cellColor = Color.Red;
 
         public Form1()
         {
@@ -37,7 +39,7 @@ namespace lab4_game_of_life
 
 
 
-        private void Draw(ref CDrawer drawer,  int[,] cellArray)  //draw the canvas 
+        private void Draw(ref CDrawer drawer,  int[,] cellArray,ref Color cellcolor)  //draw the canvas 
         {
             drawer.BBColour = Color.Black;
            
@@ -47,7 +49,7 @@ namespace lab4_game_of_life
                 {
                     if (cellArray[i, j] ==1)
                     {
-                        drawer.SetBBScaledPixel(i, j, Color.Red);
+                        drawer.SetBBScaledPixel(i, j, cellcolor);
 
                     }
                    
@@ -56,8 +58,8 @@ namespace lab4_game_of_life
             drawer.Render();
             
         }
-        //radnomize array with 1000 live cells excluding borader
-        private void RandomizeCellArray(ref int[,] cellArray)
+        //radnomize array with  live cells excluding borader
+        private void RandomizeCellArray(ref int[,] cellArray,ref int cellnumbers)
         {
             cellArray = new int[80, 60];
             int counter = 0;
@@ -73,16 +75,21 @@ namespace lab4_game_of_life
                             counter++;
                         }
 
-                    } while (counter<1000);
+                    } while (counter<cellnumbers);
                     
 
         }
 
         private void button1_Click(object sender, EventArgs e) //new pattern button
         {
-
-            RandomizeCellArray(ref foreground);
-            Draw(ref mydrawer, foreground);
+            NewPattern_ModeDialog NewPatternDialog = new NewPattern_ModeDialog();
+            if (NewPatternDialog.ShowDialog()==DialogResult.OK)
+            {
+                cellColor = NewPatternDialog._color;
+                cellsNumber = NewPatternDialog._cellNumber;
+            }
+            RandomizeCellArray(ref foreground,ref cellsNumber);
+            Draw(ref mydrawer, foreground,ref cellColor);
             cycle = 0;
         }
         private void LifeCycle(ref int[,]foreground,ref int[,]background,ref int countcycle)
@@ -113,7 +120,7 @@ namespace lab4_game_of_life
                     if (foreground[i, j] == 0 && counter == 3) background[i, j] = 1;
                 }
             }
-            Draw(ref mydrawer, background);
+            Draw(ref mydrawer, background,ref cellColor);
             foreground = background;
             background = new int[80, 60];
             cycle++;

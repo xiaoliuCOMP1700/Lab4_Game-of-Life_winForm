@@ -76,6 +76,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "SpeedModeless";
+            this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.Text = "speed";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SpeedModeless_FormClosing);
             this.Load += new System.EventHandler(this.SpeedModeless_Load);
